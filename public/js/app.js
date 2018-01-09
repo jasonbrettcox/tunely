@@ -40,6 +40,36 @@ sampleAlbums.push({
 $(document).ready(function() {
   console.log('app.js loaded!');
 
+  //get data from /api/albums
+  $.get('/api/albums', function(albums){
+    console.log("here's my albums")
+    console.log(albums);
+    albums.forEach(function(album){
+    renderAlbum(album);
+
+
+  });
+
+});
+  $('form').submit( function(event){
+    event.preventDefault();
+    console.log('i suck at this');
+    var formData = $(this).serialize();
+    
+    
+
+    $(this).trigger("reset");
+
+    $.ajax({
+      url: "/api/albums",
+      type: "POST",
+      data: formData
+    }).done(function(album){
+      console.log("post successful");
+      renderAlbum(album)
+    });
+      
+  })
 });
 
 
@@ -63,15 +93,15 @@ function renderAlbum(album) {
   "                    <ul class='list-group'>" +
   "                      <li class='list-group-item'>" +
   "                        <h4 class='inline-header'>Album Name:</h4>" +
-  "                        <span class='album-name'>" + "HARDCODED ALBUM NAME" + "</span>" +
+  "                        <span class='album-name'>" + album.name + "</span>" +
   "                      </li>" +
   "                      <li class='list-group-item'>" +
   "                        <h4 class='inline-header'>Artist Name:</h4>" +
-  "                        <span class='artist-name'>" +  "HARDCODED ARTIST NAME"+ "</span>" +
+  "                        <span class='artist-name'>" +  album.artistName + "</span>" +
   "                      </li>" +
   "                      <li class='list-group-item'>" +
   "                        <h4 class='inline-header'>Released date:</h4>" +
-  "                        <span class='album-releaseDate'>" + "HARDCODED ALBUM RELEASE" + "</span>" +
+  "                        <span class='album-releaseDate'>" + album.releaseDate + "</span>" +
   "                      </li>" +
   "                    </ul>" +
   "                  </div>" +
@@ -81,5 +111,5 @@ function renderAlbum(album) {
   "          <!-- end one album -->";
 
   // render to the page with jQuery
-
-}
+$('#albums').append(albumHtml)
+};
