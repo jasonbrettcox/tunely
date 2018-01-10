@@ -42,8 +42,8 @@ $(document).ready(function() {
 
   //get data from /api/albums
   $.get('/api/albums', function(albums){
-    console.log("here's my albums")
-    console.log(albums);
+    // console.log("here's my albums")
+    // console.log(albums);
     albums.forEach(function(album){
     renderAlbum(album);
 
@@ -102,7 +102,7 @@ function renderAlbum(album) {
   "                      <li class='list-group-item'>" +
   "                        <h4 class='inline-header'>Released date:</h4>" +
   "                        <span class='album-releaseDate'>" + album.releaseDate + "</span>" +
-  "                      </li>" +
+  "                      </li>" + buildSongsHtml(album.songs) +
   "                    </ul>" +
   "                  </div>" +
   "                </div>" +
@@ -112,4 +112,20 @@ function renderAlbum(album) {
 
   // render to the page with jQuery
 $('#albums').append(albumHtml)
+};
+
+function buildSongsHtml(songs) { 
+  var songText = "	– "; songs.forEach(function(song) { 
+    songText = songText + 
+    "(" + song.trackNumber + 
+    ") " + song.name + 
+    " – "; }); 
+    var songsHtml = "<li class='list-group-item'>" +
+      "<h4 class='inline-header'>Songs:</h4>" + 
+      "<span>" +
+       songText + 
+       "</span>" +
+       "</li>";
+       return songsHtml;
+
 };
